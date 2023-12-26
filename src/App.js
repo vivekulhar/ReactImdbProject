@@ -3,6 +3,7 @@ import NavBar from "./components/NavBar";
 import Banner from "./components/Banner";
 import Movies from "./components/Movies";
 import WatchList from "./components/WatchList";
+import Pagination from "./components/Pagination";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           />
         </Routes>
       </BrowserRouter>
+      
     </>
     // {<React.Fragment>
     //   <NavBar />
