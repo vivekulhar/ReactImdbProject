@@ -1,20 +1,40 @@
+import "./App.css";
+import NavBar from "./components/NavBar";
+import Banner from "./components/Banner";
+import Movies from "./components/Movies";
+import WatchList from "./components/WatchList";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import './App.css';
-import NavBar from './components/NavBar';
-import Banner from './components/Banner';
-import Movies from './components/Movies';
 function App() {
   return (
     <>
       <NavBar />
-      <Banner />
-      <Movies />
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Banner />
+                <Movies />
+              </>
+            }
+          />
+          <Route
+            path="/watchlist"
+            element={
+              <>
+                <WatchList />
+              </>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
     </>
     // {<React.Fragment>
     //   <NavBar />
     //   <Banner />
     // </React.Fragment>}
-    
   );
 }
 
