@@ -19,13 +19,14 @@ function Movies() {
         }
     }
     // WatchList Handlers
-    const addToWatchList = (id) => {
+    const addToWatchList = (movie) => {
         // ... is the spread operator
-        const newWatchList = [...watchList, id]
+        const newWatchList = [...watchList, movie]
         setWatchList(newWatchList)
+        localStorage.setItem('imdb', JSON.stringify(newWatchList))
     }
-    const removeFromWatchList = (id) => {
-        const filteredWatchList = watchList.filter((item) => item !== id)
+    const removeFromWatchList = (movie) => {
+        const filteredWatchList = watchList.filter((item) => item.id !== movie.id)
         setWatchList(filteredWatchList)
     }
 
@@ -77,10 +78,10 @@ function Movies() {
               <div className="text-xl p-2 bg-gray-900 rounded-xl absolute right-2 top-2 opacity-70"
               style={{display:hovered==movie.id?'block':'none'}}
               >
-                {watchList.includes(movie.id) == false ? (
-                  <div onClick={() => addToWatchList(movie.id)}>🤩</div>
+                {watchList.includes(movie) == false ? (
+                  <div onClick={() => addToWatchList(movie)}>🤩</div>
                 ) : (
-                  <div onClick={()=>removeFromWatchList(movie.id)}>❌</div>
+                  <div onClick={()=>removeFromWatchList(movie)}>❌</div>
                 )}
               </div>
 
