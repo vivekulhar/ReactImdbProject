@@ -68,7 +68,7 @@ function Movies() {
     <div>
       <div className="text-2xl mb-8 font-bold text-center">Trending Movies</div>
 
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap justify-center">
         {movies.map((movie) => {
           return (
             <div

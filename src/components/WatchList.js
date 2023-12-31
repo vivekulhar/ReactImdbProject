@@ -6,6 +6,7 @@ function WatchList() {
   const [currentGenre, setCurrentGenre] = useState("All Genres");
   const [rating, setRating] = useState(0);
   const [popularity, setPopularity] = useState(0);
+  const [search, setSearch] = useState("");
   useEffect(() => {
     let moviesFromLocalStorage = JSON.parse(localStorage.getItem("imdb"));
     setWatchList(moviesFromLocalStorage);
@@ -48,27 +49,30 @@ function WatchList() {
           (movies) => genreids[movies.genre_ids[0]] === currentGenre
         );
 
-        // Sorting with Respect to ratng
-        if(rating === -1){
-            filteredArray.sort((a,b) => b.vote_average - a.vote_average);
-        }
-        else if(rating === 1){
-            filteredArray.sort((a,b) => a.vote_average - b.vote_average);
-        }
-        // Sorting with Respect to popularity
-        if(popularity === -1){
-            filteredArray.sort((a,b) => b.popularity - a.popularity);
-        }
-        else if(popularity === 1){
-            filteredArray.sort((a,b) => a.popularity - b.popularity);
-        }
+  // Sorting with Respect to ratng
+  if (rating === -1) {
+    filteredArray.sort((a, b) => b.vote_average - a.vote_average);
+  } else if (rating === 1) {
+    filteredArray.sort((a, b) => a.vote_average - b.vote_average);
+  }
+  // Sorting with Respect to popularity
+  if (popularity === -1) {
+    filteredArray.sort((a, b) => b.popularity - a.popularity);
+  } else if (popularity === 1) {
+    filteredArray.sort((a, b) => a.popularity - b.popularity);
+  }
 
-        // delete function
-        const del = (movie) => {
-            let newArray = favourites.filter((item) => item.id != movie.id)
-            setWatchList(newArray)
-            localStorage.setItem('imdb', JSON.stringify(newArray))
-        }
+  // delete function
+  const del = (movie) => {
+    let newArray = favourites.filter((item) => item.id != movie.id);
+    setWatchList(newArray);
+    localStorage.setItem("imdb", JSON.stringify(newArray));
+  };
+  // search function
+  filteredArray = filteredArray.filter((movies) =>
+    movies.title.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <>
       <div className="mt-6 flex space-x-2 justify-center">
@@ -86,6 +90,16 @@ function WatchList() {
             </button>
           );
         })}
+      </div>
+
+      <div className="text-center">
+        <input
+          type="text"
+          className="border bg-gray-200 border-4 text-center p-1 m-2"
+          placeholder="Search for Movies"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
       <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
@@ -163,7 +177,12 @@ function WatchList() {
                     <td className="pl-6 py-4">{movies.popularity}</td>
                     <td className="py-4">{genreids[movies.genre_ids[0]]}</td>
                     <td className="">
-                      <button className="text-red-600"onClick={()=>del(movies)}>Delete</button>
+                      <button
+                        className="text-red-600"
+                        onClick={() => del(movies)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 );
