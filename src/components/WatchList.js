@@ -4,7 +4,8 @@ function WatchList() {
   const [favourites, setWatchList] = useState([]);
   const [genres, setGenres] = useState([]);
   const [currentGenre, setCurrentGenre] = useState("All Genres");
-
+  const [rating, setRating] = useState(0);
+  const [popularity, setPopularity] = useState(0);
   useEffect(() => {
     let moviesFromLocalStorage = JSON.parse(localStorage.getItem("imdb"));
     setWatchList(moviesFromLocalStorage);
@@ -47,6 +48,27 @@ function WatchList() {
           (movies) => genreids[movies.genre_ids[0]] === currentGenre
         );
 
+        // Sorting with Respect to ratng
+        if(rating === -1){
+            filteredArray.sort((a,b) => b.vote_average - a.vote_average);
+        }
+        else if(rating === 1){
+            filteredArray.sort((a,b) => a.vote_average - b.vote_average);
+        }
+        // Sorting with Respect to popularity
+        if(popularity === -1){
+            filteredArray.sort((a,b) => b.popularity - a.popularity);
+        }
+        else if(popularity === 1){
+            filteredArray.sort((a,b) => a.popularity - b.popularity);
+        }
+
+        // delete function
+        const del = (movie) => {
+            let newArray = favourites.filter((item) => item.id != movie.id)
+            setWatchList(newArray)
+            localStorage.setItem('imdb', JSON.stringify(newArray))
+        }
   return (
     <>
       <div className="mt-6 flex space-x-2 justify-center">
@@ -58,7 +80,7 @@ function WatchList() {
                   ? "m-2 text-lg p-1 px-2 bg-blue-400 hover:bg-blue-400  text-white rounded-xl font-bold"
                   : "m-2 text-lg p-1 px-2 bg-gray-400 hover:bg-blue-400  text-white rounded-xl font-bold"
               }
-                onClick={() => setCurrentGenre(genre)}
+              onClick={() => setCurrentGenre(genre)}
             >
               {genre}
             </button>
@@ -74,12 +96,40 @@ function WatchList() {
 
               <th>
                 <div className="flex">
+                  <img
+                    src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-up-arrows-those-icons-lineal-those-icons-3.png"
+                    className="mr-1"
+                    onClick={() => {
+                      setRating(1);
+                    }}
+                  />
                   <div>Rating</div>
+                  <img
+                    src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-down-arrows-those-icons-lineal-those-icons-4.png"
+                    className="ml-1"
+                    onClick={() => {
+                      setRating(-1);
+                    }}
+                  />
                 </div>
               </th>
               <th>
                 <div className="flex">
+                  <img
+                    src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-up-arrows-those-icons-lineal-those-icons-3.png"
+                    className="mr-1"
+                    onClick={() => {
+                      setPopularity(1);
+                    }}
+                  />
                   <div>Popularity</div>
+                  <img
+                    src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-down-arrows-those-icons-lineal-those-icons-4.png"
+                    className="ml-1"
+                    onClick={() => {
+                      setPopularity(-1);
+                    }}
+                  />
                 </div>
               </th>
               <th>
@@ -112,6 +162,9 @@ function WatchList() {
                     <td className="pl-6 py-4">{movies.vote_average}</td>
                     <td className="pl-6 py-4">{movies.popularity}</td>
                     <td className="py-4">{genreids[movies.genre_ids[0]]}</td>
+                    <td className="">
+                      <button className="text-red-600"onClick={()=>del(movies)}>Delete</button>
+                    </td>
                   </tr>
                 );
               })
